@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    Home page
+    Shop
 {% endblock %}
 
 {% block content%}
@@ -13,18 +13,22 @@
             inspection of goods prior to purchase. In ancient Greece, the agora served as a marketplace where merchants
             kept stalls or shops to sell their goods</p>
         <div class="row g-4">
+
+            {% for product in products %}
             <div class="col-md-6 col-lg-3">
                 <div class="card bg-light">
                     <div class="card-body text-center">
-                        <img src="../static/items/1.png" class="card-img mb-3" alt="1">
-                        <h5 class="card-title mb-3">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
+                        <img src="../static/products/{{ product.id }}.png" class="card-img mb-3" alt="{{ product.name }}">
+                        <h5 class="card-title mb-3">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-text"><strong>{{ product.price }}$</strong></p>
                         <a href="#" class="btn btn-secondary">Add to card</a>
                     </div>
                 </div>
-            </div>
+                </div>
+            {% endfor %}
+
+
         </div>
     </div>
 </section>
