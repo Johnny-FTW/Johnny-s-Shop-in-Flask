@@ -13,3 +13,8 @@ def home_page():
 def shop_page():
     products = Product.query.all()
     return render_template('shop.html', products=products)
+
+
+@app.route('/register')
+def register_page():
+    pass
