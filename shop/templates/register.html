@@ -9,6 +9,7 @@ Register
 <body class="text-center">
 <div class="container">
     <form method="POST" class="form-register">
+        {{ form.hidden_tag() }}
         <br>
         <h2>Please Create your Account</h2>
             {{ form.first_name.label()}}

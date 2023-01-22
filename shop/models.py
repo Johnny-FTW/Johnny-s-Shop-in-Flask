@@ -15,7 +15,7 @@ class Customer(db.Model):
 
 class Password(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    value = db.Column(db.String(length=60), nullable=False, unique=True)
+    value = db.Column(db.String(length=60), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), unique=True)
 
 
