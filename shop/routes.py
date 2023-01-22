@@ -1,5 +1,6 @@
 from shop import app
 from flask import render_template
+from shop.forms import RegisterForm
 from shop.models import Product
 
 
@@ -17,4 +18,5 @@ def shop_page():
 
 @app.route('/register')
 def register_page():
-    pass
+    form = RegisterForm()
+    return render_template('register.html', form=form)
