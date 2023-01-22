@@ -2,6 +2,7 @@ from flask import Flask, render_template ,url_for
 from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:komojini@localhost:5432/johnnys_shop'
+app.config['SECRET_KEY'] = '7cbebf954748b1a7f55c'
 db = SQLAlchemy(app)
 
 
