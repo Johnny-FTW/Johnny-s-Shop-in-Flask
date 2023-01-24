@@ -12,6 +12,7 @@ Register
         {{ form.hidden_tag() }}
         <br>
         <h2>Please Create your Account</h2>
+
             {{ form.first_name.label()}}
             {{ form.first_name(class="form-control", placeholder="First Name")}}
 
@@ -20,6 +21,7 @@ Register
 
             {{ form.email.label()}}
             {{ form.email(class="form-control", placeholder="Email")}}
+
 
             {{ form.address.label()}}
             {{ form.address(class="form-control", placeholder="Address")}}
@@ -35,6 +37,7 @@ Register
 
             {{ form.password2.label()}}
             {{ form.password2(class="form-control", placeholder="Confirm Password")}}
+
             <br>
 
             {{ form.submit(class="btn btn-lg col-12 btn-secondary") }}
