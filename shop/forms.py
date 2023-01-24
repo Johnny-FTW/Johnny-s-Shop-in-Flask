@@ -8,8 +8,8 @@ from shop.models import Customer
 class RegisterForm(FlaskForm):
 
     def validate_email(self, email_to_check):
-        user = Customer.query.filter_by(email=email_to_check.data).first()
-        if user:
+        customer = Customer.query.filter_by(email=email_to_check.data).first()
+        if customer:
             raise ValidationError('Email already exists!')
 
     first_name = StringField(label='First Name:', validators=[Length(min=2, max=20), DataRequired()])

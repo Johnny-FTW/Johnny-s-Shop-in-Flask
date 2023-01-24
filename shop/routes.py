@@ -26,9 +26,9 @@ def register_page():
                                       address=form.address.data,
                                       postcode=form.postcode.data,
                                       country=form.country.data)
-        password = Password(value=form.password1.data, customer=customer_to_create)
+        password_real = Password(value=form.password1.data, customer=customer_to_create)
         db.session.add(customer_to_create)
-        db.session.add(password)
+        db.session.add(password_real)
         db.session.commit()
         return redirect(url_for('shop_page'))
     if form.errors !={}:
