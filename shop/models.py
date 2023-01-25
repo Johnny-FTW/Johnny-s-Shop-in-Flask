@@ -1,4 +1,4 @@
-from shop import db, bcrypt
+from shop import db
 
 
 class Customer(db.Model):
@@ -13,20 +13,10 @@ class Customer(db.Model):
     password = db.relationship('Password', backref='customer', uselist=False)
 
 
-
-
 class Password(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     value = db.Column(db.String(length=60), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
-
-    @property
-    def password(self):
-        return self.password_real
-
-    @password.setter
-    def password(self, plain_text_password):
-        self.value = bcrypt.generate_password_hash(plain_text_password).decode('utf-8')
 
 
 class Product(db.Model):

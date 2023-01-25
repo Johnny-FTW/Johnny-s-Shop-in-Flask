@@ -1,4 +1,4 @@
-from shop import app, db
+from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash
 from shop.forms import RegisterForm
 from shop.models import Product, Customer, Password
@@ -26,9 +26,10 @@ def register_page():
                                       address=form.address.data,
                                       postcode=form.postcode.data,
                                       country=form.country.data)
-        password_real = Password(value=form.password1.data, customer=customer_to_create)
+        password_hash = bcrypt.generate_password_hash(form.password1.data).decode('utf-8')
+        password_hashed = Password(value=password_hash, customer=customer_to_create)
         db.session.add(customer_to_create)
-        db.session.add(password_real)
+        db.session.add(password_hashed)
         db.session.commit()
         return redirect(url_for('shop_page'))
     if form.errors !={}:
