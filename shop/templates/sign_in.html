@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sign in
+{% endblock %}
+
+
+{% block content%}
+<body class="text-center">
+<div class="container">
+    <form method="POST" class="form-register">
+        {{ form.hidden_tag() }}
+        <br>
+        <h2>Please Sign in</h2>
+
+            {{ form.email.label()}}
+            {{ form.email(class="form-control", placeholder="Email")}}
+
+            {{ form.password.label() }}
+            {{ form.password(class="form-control", placeholder="Password") }}
+            <br>
+            {{ form.submit(class="btn btn-lg col-12 btn-secondary") }}
+
+        <div>
+            <a href="{{ url_for('register_page') }}" class="link-secondary"><h6>Do not have an account?</h6></a>
+        </div>
+    </form>
+</div>
+
+</body>
+{% endblock %}

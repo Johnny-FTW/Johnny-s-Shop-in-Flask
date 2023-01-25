@@ -1,6 +1,6 @@
 from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash
-from shop.forms import RegisterForm
+from shop.forms import RegisterForm, SignInForm
 from shop.models import Product, Customer, Password
 
 
@@ -36,3 +36,15 @@ def register_page():
         for err_msg in form.errors.values():
             flash(f'Error:{err_msg}', category='danger')
     return render_template('register.html', form=form)
+
+
+@app.route('/sign_in', methods=['GET','POST'])
+def sign_in_page():
+    form = SignInForm()
+    return render_template('sign_in.html', form=form)
+
+
+
+
+
+
