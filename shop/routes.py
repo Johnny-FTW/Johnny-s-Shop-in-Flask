@@ -1,5 +1,4 @@
 from flask_login import login_user
-
 from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash
 from shop.forms import RegisterForm, SignInForm
