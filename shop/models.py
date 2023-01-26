@@ -1,7 +1,13 @@
-from shop import db
+from shop import db, bcrypt, login_manager
+from flask_login import UserMixin
 
 
-class Customer(db.Model):
+@login_manager.user_loader
+def load_user(customer_id):
+    return Customer.query.get(int(customer_id))
+
+
+class Customer(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)
     first_name = db.Column(db.String(length=20), nullable=False)
     last_name = db.Column(db.String(length=20), nullable=False)
@@ -17,6 +23,10 @@ class Password(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     value = db.Column(db.String(length=60), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.value, password)
+
 
 
 class Product(db.Model):

@@ -1,3 +1,5 @@
+from flask_login import login_user
+
 from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash
 from shop.forms import RegisterForm, SignInForm
@@ -41,6 +43,16 @@ def register_page():
 @app.route('/sign_in', methods=['GET','POST'])
 def sign_in_page():
     form = SignInForm()
+    if form.validate_on_submit():
+        attempted_user = Customer.query.filter_by(email=form.email.data).first()
+        password = Password.query.filter_by(customer_id=attempted_user).first()
+
+        if attempted_user and password.check_password(password=form.password.data):
+            login_user(attempted_user)       #TODO
+            flash('GOOD', category='success')
+            return redirect(url_for('shop_page'))
+        else:
+            flash('Wrong password', category='danger')
     return render_template('sign_in.html', form=form)
 
 
