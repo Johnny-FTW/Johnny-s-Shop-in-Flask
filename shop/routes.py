@@ -45,14 +45,16 @@ def sign_in_page():
     form = SignInForm()
     if form.validate_on_submit():
         attempted_user = Customer.query.filter_by(email=form.email.data).first()
-        password = Password.query.filter_by(customer_id=attempted_user).first()
-
-        if attempted_user and password.check_password(password=form.password.data):
-            login_user(attempted_user)       #TODO
-            flash('GOOD', category='success')
-            return redirect(url_for('shop_page'))
+        if attempted_user:
+            password = Password.query.filter_by(customer_id=attempted_user.id).first()
+            if password.check_password(password=form.password.data):
+                login_user(attempted_user)
+                flash('You are logged in!', category='success')
+                return redirect(url_for('shop_page'))
+            else:
+                flash('Wrong password.', category='danger')
         else:
-            flash('Wrong password', category='danger')
+            flash('Email does not exists.', category='danger')
     return render_template('sign_in.html', form=form)
 
 
