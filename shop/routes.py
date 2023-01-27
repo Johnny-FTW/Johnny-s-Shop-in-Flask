@@ -1,4 +1,4 @@
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash
 from shop.forms import RegisterForm, SignInForm
@@ -56,6 +56,12 @@ def sign_in_page():
             flash('Email does not exists.', category='danger')
     return render_template('sign_in.html', form=form)
 
+
+@app.route('/logout')
+def logout_page():
+    logout_user()
+    flash('You have been logget out!', category='info')
+    return redirect(url_for('home_page'))
 
 
 
