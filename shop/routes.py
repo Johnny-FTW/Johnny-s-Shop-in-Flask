@@ -1,4 +1,4 @@
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash
 from shop.forms import RegisterForm, SignInForm
@@ -32,6 +32,8 @@ def register_page():
         db.session.add(customer_to_create)
         db.session.add(password_hashed)
         db.session.commit()
+        login_user(customer_to_create)
+        flash('Account created successfully!', category='success')
         return redirect(url_for('shop_page'))
     if form.errors !={}:
         for err_msg in form.errors.values():
@@ -58,10 +60,17 @@ def sign_in_page():
 
 
 @app.route('/logout')
+@login_required
 def logout_page():
     logout_user()
     flash('You have been logget out!', category='info')
     return redirect(url_for('home_page'))
+
+
+@app.route('/cart')
+@login_required
+def cart_page():
+    return redirect(url_for('cart_page'))
 
 
 

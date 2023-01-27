@@ -11,18 +11,9 @@ app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
+# login_manager.login_view = 'login_page'
+# login_manager.login_message_category = 'info'
 from shop import routes
 
 
 
-# i1 = Product(name='Banana', price=10, description='This is banana')
-# db.session.add(i1)
-# i2 = Product(name='Apple', price=20, description='This is apple')
-# db.session.add(i2)
-# i3 = Product(name='Cherry', price=30, description='This is cherry')
-# db.session.add(i3)
-# i4 = Product(name='Strawberry', price=15, description='This is strawberry')
-# db.session.add(i4)
-# i5 = Product(name='Pineapple', price=18, description='This is pineapple')
-# db.session.add(i5)
-# db.session.commit()
