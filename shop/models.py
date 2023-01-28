@@ -17,6 +17,7 @@ class Customer(db.Model, UserMixin):
     country = db.Column(db.String(length=20), nullable=False)
     budget = db.Column(db.Integer(), nullable=False, default=500)
     password = db.relationship('Password', backref='customer', uselist=False)
+    ordered_products = db.relationship('OrderedProducts', backref='product_c', lazy=True)
 
 
 class Password(db.Model):
@@ -24,9 +25,9 @@ class Password(db.Model):
     value = db.Column(db.String(length=60), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
 
+
     def check_password(self, password):
         return bcrypt.check_password_hash(self.value, password)
-
 
 
 class Product(db.Model):
@@ -34,6 +35,13 @@ class Product(db.Model):
     name = db.Column(db.String(length=20), nullable=False, unique=True)
     price = db.Column(db.Integer(), nullable=False)
     description = db.Column(db.String(length=1024), nullable=False, unique=True)
+    ordered_products = db.relationship('OrderedProducts', backref='product_p', lazy=True)
 
     def __repr__(self):
-        return f'Product {self.name}'
+        return f'Product:{self.name}'
+
+
+class OrderedProducts(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))

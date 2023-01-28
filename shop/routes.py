@@ -1,8 +1,8 @@
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from shop import app, db, bcrypt
-from flask import render_template, redirect, url_for, flash
-from shop.forms import RegisterForm, SignInForm
-from shop.models import Product, Customer, Password
+from flask import render_template, redirect, url_for, flash, request
+from shop.forms import RegisterForm, SignInForm, AddToCart
+from shop.models import Product, Customer, Password, OrderedProducts
 
 
 @app.route('/')
@@ -11,10 +11,20 @@ def home_page():
     return render_template('home.html')
 
 
-@app.route('/shop')
+@app.route('/shop', methods=['GET','POST'])
 def shop_page():
     products = Product.query.all()
-    return render_template('shop.html', products=products)
+    form = AddToCart()
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            purchased_product = request.form.get('product')
+            ordered_product = OrderedProducts(product_id=purchased_product, customer_id=current_user.id)
+            db.session.add(ordered_product)
+            db.session.commit()
+
+        else:
+            flash('You need sign in first!', category='info')
+    return render_template('shop.html', products=products, form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -41,10 +51,7 @@ def register_page():
     return render_template('register.html', form=form)
 
 
-
-
-
-@app.route('/sign_in', methods=['GET','POST'])
+@app.route('/sign_in', methods=['GET', 'POST'])
 def sign_in_page():
     form = SignInForm()
     if form.validate_on_submit():
@@ -70,7 +77,7 @@ def logout_page():
     return redirect(url_for('home_page'))
 
 
-@app.route('/cart')
+@app.route('/cart', methods=['GET','POST'])
 @login_required
 def cart_page():
     return render_template('cart.html')

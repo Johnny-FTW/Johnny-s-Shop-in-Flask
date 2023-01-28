@@ -22,7 +22,10 @@
                         <h5 class="card-title mb-3">{{ product.name }}</h5>
                         <p class="card-text">{{ product.description }}</p>
                         <p class="card-text"><strong>{{ product.price }}$</strong></p>
-                        <a href="#" class="btn btn-secondary">Add to cart</a>
+                        <form method="POST">
+                            <input id="product" name="product" type="hidden" value="{{ product.id }}">
+                            {{ form.submit(class="btn btn-lg btn-secondary") }}
+                        </form>
                     </div>
                 </div>
                 </div>
