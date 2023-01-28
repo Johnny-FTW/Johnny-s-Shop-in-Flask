@@ -41,6 +41,9 @@ def register_page():
     return render_template('register.html', form=form)
 
 
+
+
+
 @app.route('/sign_in', methods=['GET','POST'])
 def sign_in_page():
     form = SignInForm()
@@ -70,7 +73,8 @@ def logout_page():
 @app.route('/cart')
 @login_required
 def cart_page():
-    return redirect(url_for('cart_page'))
+    return render_template('cart.html')
+
 
 
 
