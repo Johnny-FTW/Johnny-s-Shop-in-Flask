@@ -8,9 +8,6 @@ from shop.models import Product, Customer, Password, OrderedProducts
 @app.route('/')
 @app.route('/home')
 def home_page():
-    if current_user.is_authenticated:
-        purchased_items = OrderedProducts.query.filter_by(customer_id=current_user.id).all()
-        return render_template('home.html', purchased_items=purchased_items)
     return render_template('home.html')
 
 
@@ -28,8 +25,9 @@ def shop_page():
             flash(f'Product was added to your order!', category='success')
             purchased_items = OrderedProducts.query.filter_by(customer_id=current_user.id).all()
         return render_template('shop.html', products=products, form=form, purchased_items=purchased_items)
-        # else:
-        #     flash('You need sign in first!', category='info')
+    else:
+        if request.method == 'POST':
+            flash('You need sign in first!', category='info')
 
     return render_template('shop.html', products=products, form=form)
 

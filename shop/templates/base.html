@@ -37,11 +37,14 @@
             {% if current_user.is_authenticated %}
 
             <ul class="navbar-nav">
+
+                {% block navigation %}
                 <li class="nav-item">
                     <a class="nav-link active" href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <img src="static/img/cart.svg" alt="person">
                     </a>
                 </li>
+                {% endblock %}
                 <li class="nav-item">
                     <a class="nav-link active">
                         <img src="static/img/wallet2.svg" alt="person">
