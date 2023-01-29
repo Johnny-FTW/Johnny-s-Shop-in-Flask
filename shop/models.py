@@ -41,7 +41,7 @@ class Product(db.Model):
         return f'Product:{self.name}'
 
 
-class OrderedProducts(db.Model):
+class OrderedProducts(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
