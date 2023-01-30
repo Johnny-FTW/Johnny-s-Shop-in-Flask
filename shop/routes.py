@@ -16,15 +16,19 @@ def shop_page():
     products = Product.query.all()
     form = AddToCart()
     if current_user.is_authenticated:
-        purchased_items = OrderedProducts.query.filter_by(customer_id=current_user.id).all()
+        orders = OrderedProducts.query.filter_by(customer_id=current_user.id).all()
+
         if request.method == 'POST':
             purchased_product = request.form.get('product')
             ordered_product = OrderedProducts(product_id=purchased_product, customer_id=current_user.id)
             db.session.add(ordered_product)
             db.session.commit()
             flash(f'Product was added to your order!', category='success')
-            purchased_items = OrderedProducts.query.filter_by(customer_id=current_user.id).all()
-        return render_template('shop.html', products=products, form=form, purchased_items=purchased_items)
+            orders = OrderedProducts.query.filter_by(customer_id=current_user.id).all()
+            #product_idx=
+            ordered_items = Product.query.filter_by(id__in=orders).all()
+
+            return render_template('shop.html', products=products, form=form, orders=orders, ordered_items=ordered_items)
     else:
         if request.method == 'POST':
             flash('You need sign in first!', category='info')

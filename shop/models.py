@@ -25,7 +25,6 @@ class Password(db.Model):
     value = db.Column(db.String(length=60), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
 
-
     def check_password(self, password):
         return bcrypt.check_password_hash(self.value, password)
 
