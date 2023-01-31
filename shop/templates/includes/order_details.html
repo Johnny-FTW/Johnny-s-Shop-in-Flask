@@ -14,8 +14,10 @@
                     style="height: 0; background-color: transparent; opacity: .75; border-top: 2px dashed #9e9e9e;">
                 {% for order in orders %}
                 <div class="d-flex justify-content-between">
-                    <p class="fw-bold mb-0">{{ordered_items.name}}(Qty:1)</p>
-                    <p class="text-muted mb-0">$1750.00</p>
+
+                    <p class="fw-bold mb-0">{{ order.name }}(Qty:1)</p>
+                    <p class="text-muted mb-0">${{ order.price }}</p>
+
                 </div>
                 {% endfor %}
 
