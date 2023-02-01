@@ -17,7 +17,7 @@ def shop_page():
     form = AddToCart()
 
     if current_user.is_authenticated:
-        orders = db.session.query(OrderedProducts.product_id, Product.name, Product.price).join(Product,
+        orders = db.session.query(OrderedProducts.id, Product.name, Product.price).join(Product,
                                                                                                 Product.id == OrderedProducts.product_id,
                                                                                                 isouter=True).all()
         if request.method == 'POST':
@@ -26,7 +26,7 @@ def shop_page():
             db.session.add(ordered_product)
             db.session.commit()
             flash(f'Product was added to your order!', category='success' )
-            orders = db.session.query(OrderedProducts.product_id, Product.name, Product.price).join(Product,
+            orders = db.session.query(OrderedProducts.id, Product.name, Product.price).join(Product,
                                                                                                     Product.id == OrderedProducts.product_id,
                                                                                                     isouter=True).all()
 
