@@ -1,4 +1,6 @@
 from flask_login import login_user, logout_user, login_required, current_user
+from sqlalchemy import func
+
 from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash, request
 from shop.forms import RegisterForm, SignInForm, AddToCart
@@ -17,26 +19,22 @@ def shop_page():
     form = AddToCart()
 
     if current_user.is_authenticated:
-        orders = db.session.query(OrderedProducts.id, Product.name, Product.price).join(Product,
-                                                                                                Product.id == OrderedProducts.product_id,
-                                                                                                isouter=True).all()
+        orders = db.session.query(OrderedProducts.id, Product.name, Product.price)\
+            .join(Product,Product.id == OrderedProducts.product_id, isouter=True).all()
         if request.method == 'POST':
             purchased_product = request.form.get('product')
             ordered_product = OrderedProducts(product_id=purchased_product, customer_id=current_user.id)
             db.session.add(ordered_product)
             db.session.commit()
             flash(f'Product was added to your order!', category='success' )
-            orders = db.session.query(OrderedProducts.id, Product.name, Product.price).join(Product,
-                                                                                                    Product.id == OrderedProducts.product_id,
-                                                                                                    isouter=True).all()
-
-        return render_template('shop.html', products=products, form=form, orders=orders)
+            orders = db.session.query(OrderedProducts.id, Product.name, Product.price)\
+                .join(Product, Product.id == OrderedProducts.product_id, isouter=True).all()
+        total_price = db.session.query(func.sum(Product.price)).filter(Product.id == OrderedProducts.product_id).one()
+        return render_template('shop.html', products=products, form=form, orders=orders, total_price=total_price)
     else:
         if request.method == 'POST':
             flash('You need sign in first!', category='info')
-
     return render_template('shop.html', products=products, form=form)
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -87,7 +85,6 @@ def logout_page():
     logout_user()
     flash('You have been logget out!', category='info')
     return redirect(url_for('home_page'))
-
 
 
 

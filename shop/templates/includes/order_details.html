@@ -15,7 +15,7 @@
                 {% for order in orders %}
                 <div class="d-flex justify-content-between">
 
-                    <p class="fw-bold mb-0">{{ order.name }}(Qty:1)</p>
+                    <p class="fw-bold mb-0">{{ order.name }}</p>
                     <p class="text-muted mb-0">${{ order.price }}</p>
 
                 </div>
@@ -29,7 +29,7 @@
 
                 <div class="d-flex justify-content-between">
                     <p class="fw-bold">Total</p>
-                    <p class="fw-bold" style="color: #35558a;">$2125.00</p>
+                    <p class="fw-bold" style="color: #35558a;">${{ total_price }}</p>
                 </div>
 
             </div>
