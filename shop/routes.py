@@ -19,7 +19,7 @@ def shop_page():
     form = AddToCart()
 
     if current_user.is_authenticated:
-        orders = db.session.query(OrderedProducts.id, Product.name, Product.price)\
+        orders = db.session.query(OrderedProducts.customer_id, Product.name, Product.price)\
             .join(Product,Product.id == OrderedProducts.product_id, isouter=True).all()
         if request.method == 'POST':
             purchased_product = request.form.get('product')
