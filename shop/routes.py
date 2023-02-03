@@ -1,10 +1,9 @@
 from flask_login import login_user, logout_user, login_required, current_user
-from sqlalchemy import func
-
 from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash, request
 from shop.forms import RegisterForm, SignInForm, AddToCart
 from shop.models import Product, Customer, Password, OrderedProducts
+from shop.services import show_order, show_total_price
 
 
 @app.route('/')
@@ -17,22 +16,16 @@ def home_page():
 def shop_page():
     products = Product.query.all()
     form = AddToCart()
-
     if current_user.is_authenticated:
-        orders = db.session.query(OrderedProducts.customer_id, Product.name, Product.price)\
-            .filter_by(customer_id=current_user.id)\
-            .join(Product,Product.id == OrderedProducts.product_id, isouter=True).all()
+        orders = show_order()
         if request.method == 'POST':
             purchased_product = request.form.get('product')
             ordered_product = OrderedProducts(product_id=purchased_product, customer_id=current_user.id)
             db.session.add(ordered_product)
             db.session.commit()
             flash(f'Product was added to your order!', category='success' )
-            orders = db.session.query(OrderedProducts.customer_id, Product.name, Product.price) \
-                .filter_by(customer_id=current_user.id) \
-                .join(Product, Product.id == OrderedProducts.product_id, isouter=True).all()
-        total_price = db.session.query(func.sum(Product.price)).filter(Product.id == OrderedProducts.product_id)\
-            .join(OrderedProducts, OrderedProducts.customer_id==current_user.id, isouter=True).one()
+            orders = show_order()
+        total_price = show_total_price()
         return render_template('shop.html', products=products, form=form, orders=orders, total_price=total_price)
     else:
         if request.method == 'POST':
