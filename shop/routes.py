@@ -20,6 +20,7 @@ def shop_page():
 
     if current_user.is_authenticated:
         orders = db.session.query(OrderedProducts.customer_id, Product.name, Product.price)\
+            .filter_by(customer_id=current_user.id)\
             .join(Product,Product.id == OrderedProducts.product_id, isouter=True).all()
         if request.method == 'POST':
             purchased_product = request.form.get('product')
@@ -27,9 +28,11 @@ def shop_page():
             db.session.add(ordered_product)
             db.session.commit()
             flash(f'Product was added to your order!', category='success' )
-            orders = db.session.query(OrderedProducts.id, Product.name, Product.price)\
+            orders = db.session.query(OrderedProducts.customer_id, Product.name, Product.price) \
+                .filter_by(customer_id=current_user.id) \
                 .join(Product, Product.id == OrderedProducts.product_id, isouter=True).all()
-        total_price = db.session.query(func.sum(Product.price)).filter(Product.id == OrderedProducts.product_id).one()
+        total_price = db.session.query(func.sum(Product.price)).filter(Product.id == OrderedProducts.product_id)\
+            .join(OrderedProducts, OrderedProducts.customer_id==current_user.id, isouter=True).one()
         return render_template('shop.html', products=products, form=form, orders=orders, total_price=total_price)
     else:
         if request.method == 'POST':
