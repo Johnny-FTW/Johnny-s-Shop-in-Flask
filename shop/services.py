@@ -16,3 +16,9 @@ def show_total_price():
     return total_price[0]
 
 
+def cancel_order():
+    products_to_delete = OrderedProducts.query.filter_by(customer_id=current_user.id).all()
+    for product in products_to_delete:
+        db.session.delete(product)
+        db.session.commit()
+
