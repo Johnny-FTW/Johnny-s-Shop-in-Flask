@@ -31,3 +31,11 @@ class SignInForm(FlaskForm):
 
 class AddToCart(FlaskForm):
     submit = SubmitField(label='Add to cart!')
+
+
+class BuyNow(FlaskForm):
+    submit = SubmitField(label='Buy now')
+
+
+class CancelOrder(FlaskForm):
+    submit = SubmitField(label='Cancel order')

@@ -2,12 +2,9 @@
 {% block title %}
     Shop
 {% endblock %}
-
-
-
 {% block content%}
 
-
+{% include 'includes/order_details.html' %}
 
 <section id="items" class="p-5">
     <div class="container">
@@ -28,8 +25,9 @@
                         <p class="card-text">{{ product.description }}</p>
                         <p class="card-text"><strong>{{ product.price }}$</strong></p>
                         <form method="POST">
+                            {{ add_form.hidden_tag() }}
                             <input id="product" name="product" type="hidden" value="{{ product.id }}">
-                            {{ form.submit(class="btn btn-lg btn-secondary") }}
+                            {{ add_form.submit(class="btn btn-lg btn-secondary") }}
                         </form>
                     </div>
                 </div>

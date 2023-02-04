@@ -19,6 +19,9 @@ class Customer(db.Model, UserMixin):
     password = db.relationship('Password', backref='customer', uselist=False)
     ordered_products = db.relationship('OrderedProducts', backref='product_c', lazy=True)
 
+    def can_purchase(self, total_price):
+        return self.budget >= total_price
+
 
 class Password(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
