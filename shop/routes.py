@@ -1,7 +1,7 @@
 from flask_login import login_user, logout_user, login_required, current_user
 from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash, request
-from shop.forms import RegisterForm, SignInForm, AddToCart, BuyNow
+from shop.forms import RegisterForm, SignInForm, AddToCart, BuyNow, CancelOrder
 from shop.models import Product, Customer, Password, OrderedProducts
 from shop.services import show_order, show_total_price
 
@@ -19,8 +19,9 @@ def shop_page():
     add_form = AddToCart()
     buy_form = BuyNow()
     total_price = 0
+    cancel_form = CancelOrder()
     if current_user.is_authenticated:
-        if add_form.validate_on_submit():
+        if request.method == 'POST':
             if "product" in request.form:
                 purchased_product = request.form.get('product')
                 ordered_product = OrderedProducts(product_id=purchased_product, customer_id=current_user.id)
@@ -29,24 +30,27 @@ def shop_page():
                 flash(f'Product was added to your order!', category='success')
                 orders = show_order()
                 total_price = show_total_price()
-        # elif buy_form.is_submitted():
-        #     if current_user.can_purchase(total_price):
-        #         current_user.budget += total_price
-        #         db.session.commit()
-
-        # if buy_form.is_submitted():
-        #     flash(f'Thanks for your order!', category='success')
-
+            elif "buy_now" in request.form:
+                orders = show_order()
+                total_price = show_total_price()
+                if current_user.can_purchase(total_price):
+                    current_user.budget -= total_price
+                    db.session.commit()
+                    flash(f'Thank you for order!', category='success')
+                else:
+                    flash(f'Not enough money.', category='info')
+            elif "cancel_order" in request.form:
+                pass
 
         else:
             total_price = show_total_price()
             orders = show_order()
-
     else:
         if add_form.is_submitted():
             flash('You need sign in first!', category='info')
 
-    return render_template('shop.html', products=products, buy_form=buy_form, add_form=add_form, total_price=total_price, orders=orders)
+    return render_template('shop.html', products=products, buy_form=buy_form, add_form=add_form,
+                           total_price=total_price, orders=orders, cancel_form=cancel_form)
 
 
 @app.route('/register', methods=['GET', 'POST'])

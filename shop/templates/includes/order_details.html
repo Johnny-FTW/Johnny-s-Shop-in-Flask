@@ -30,12 +30,16 @@
             </div>
             <div class="modal-footer d-flex justify-content-center border-top-0 py-4">
                 <form method="POST">
-                    <input id="buy_now" name="buy_now" type="hidden" value="{{ total_price }}">
+                    {{ buy_form.hidden_tag() }}
+                    <input id="buy_now" name="buy_now" type="hidden" value="">
                     {{ buy_form.submit(class="btn btn-success btn-lg mb-1") }}
+
+                    {{ cancel_form.hidden_tag() }}
+                    <input id="cancel_order" name="cancel_order" type="hidden" value="">
+                    {{ cancel_form.submit(class="btn btn-danger btn-lg mb-1") }}
                 </form>
                 {% else %}
                 <h4 class="mb-5" style="color: #35558a;">Your cart is empty.</h4>
-
                 {% endif %}
 
 <!--                <button type="button" class="btn btn-success btn-lg mb-1">-->
