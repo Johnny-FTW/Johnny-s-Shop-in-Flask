@@ -14,3 +14,5 @@ def show_total_price():
     total_price = db.session.query(func.sum(Product.price)).filter(Product.id == OrderedProducts.product_id)\
                     .join(OrderedProducts, OrderedProducts.customer_id==current_user.id, isouter=True).one()
     return total_price[0]
+
+

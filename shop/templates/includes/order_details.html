@@ -33,7 +33,8 @@
                     {{ buy_form.hidden_tag() }}
                     <input id="buy_now" name="buy_now" type="hidden" value="">
                     {{ buy_form.submit(class="btn btn-success btn-lg mb-1") }}
-
+                </form>
+                <form method="POST">
                     {{ cancel_form.hidden_tag() }}
                     <input id="cancel_order" name="cancel_order" type="hidden" value="">
                     {{ cancel_form.submit(class="btn btn-danger btn-lg mb-1") }}

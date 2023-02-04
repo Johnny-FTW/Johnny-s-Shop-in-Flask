@@ -40,7 +40,11 @@ def shop_page():
                 else:
                     flash(f'Not enough money.', category='info')
             elif "cancel_order" in request.form:
-                pass
+                products_to_delete = OrderedProducts.query.filter_by(customer_id= current_user.id).all()
+                for product in products_to_delete:
+                    db.session.delete(product)
+                    db.session.commit()
+                flash(f'Your order was canceled.', category='info')
 
         else:
             total_price = show_total_price()
