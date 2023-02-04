@@ -2,7 +2,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from shop import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash, request
 from shop.forms import RegisterForm, SignInForm, AddToCart, BuyNow, CancelOrder
-from shop.models import Product, Customer, Password, OrderedProducts
+from shop.models import Product, Customer, Password, OrderedProducts, SuccessfulOrders
 from shop.services import show_order, show_total_price, cancel_order
 
 
@@ -37,8 +37,15 @@ def shop_page():
                     current_user.budget -= total_price
                     db.session.commit()
                     flash(f'Thank you for order!', category='success')
+                    successfu_order = SuccessfulOrders(total_price=total_price, customer_id=current_user.id)
+                    db.session.add(successfu_order)
+                    db.session.commit()
+                    cancel_order()
+                    orders = show_order()
+                    total_price = show_total_price()
                 else:
                     flash(f'Not enough money.', category='info')
+
             elif "cancel_order" in request.form:
                 cancel_order()
                 flash(f'Your order was canceled.', category='info')

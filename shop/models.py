@@ -1,3 +1,4 @@
+from sqlalchemy import DateTime, func
 from shop import db, bcrypt, login_manager
 from flask_login import UserMixin
 
@@ -18,6 +19,7 @@ class Customer(db.Model, UserMixin):
     budget = db.Column(db.Integer(), nullable=False, default=500)
     password = db.relationship('Password', backref='customer', uselist=False)
     ordered_products = db.relationship('OrderedProducts', backref='product_c', lazy=True)
+    successful_orders = db.relationship('SuccessfulOrders', backref='orded_s', lazy=True)
 
     def can_purchase(self, total_price):
         return self.budget >= total_price
@@ -43,7 +45,15 @@ class Product(db.Model):
         return f'Product:{self.name}'
 
 
-class OrderedProducts(db.Model, UserMixin):
+class OrderedProducts(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
+
+
+class SuccessfulOrders(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    total_price = db.Column(db.Integer(), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
+    time_created = db.Column(DateTime(timezone=True), server_default=func.now())
+
