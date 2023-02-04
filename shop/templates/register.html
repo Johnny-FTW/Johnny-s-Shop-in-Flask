@@ -13,35 +13,35 @@ Register
         <br>
         <h2>Please Create your Account</h2>
 
-            {{ form.first_name.label()}}
-            {{ form.first_name(class="form-control", placeholder="First Name")}}
+        {{ form.first_name.label()}}
+        {{ form.first_name(class="form-control", placeholder="First Name")}}
 
-            {{ form.last_name.label()}}
-            {{ form.last_name(class="form-control", placeholder="Last Name")}}
+        {{ form.last_name.label()}}
+        {{ form.last_name(class="form-control", placeholder="Last Name")}}
 
-            {{ form.email.label()}}
-            {{ form.email(class="form-control", placeholder="Email")}}
+        {{ form.email.label()}}
+        {{ form.email(class="form-control", placeholder="Email")}}
 
 
-            {{ form.address.label()}}
-            {{ form.address(class="form-control", placeholder="Address")}}
+        {{ form.address.label()}}
+        {{ form.address(class="form-control", placeholder="Address")}}
 
-            {{ form.postcode.label()}}
-            {{ form.postcode(class="form-control", placeholder="Postcode")}}
+        {{ form.postcode.label()}}
+        {{ form.postcode(class="form-control", placeholder="Postcode")}}
 
-            {{ form.country.label()}}
-            {{ form.country(class="form-control", placeholder="Country")}}
+        {{ form.country.label()}}
+        {{ form.country(class="form-control", placeholder="Country")}}
 
-            {{ form.password1.label()}}
-            {{ form.password1(class="form-control", placeholder="Password")}}
+        {{ form.password1.label()}}
+        {{ form.password1(class="form-control", placeholder="Password")}}
 
-            {{ form.password2.label()}}
-            {{ form.password2(class="form-control", placeholder="Confirm Password")}}
+        {{ form.password2.label()}}
+        {{ form.password2(class="form-control", placeholder="Confirm Password")}}
 
-            <br>
+        <br>
 
-            {{ form.submit(class="btn btn-lg col-12 btn-secondary") }}
-            <div>
+        {{ form.submit(class="btn btn-lg col-12 btn-secondary") }}
+        <div>
             <a href="{{ url_for('sign_in_page') }}" class="link-secondary"><h6>Do you have an account?</h6></a>
         </div>
     </form>

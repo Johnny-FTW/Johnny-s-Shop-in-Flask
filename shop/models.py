@@ -56,4 +56,3 @@ class SuccessfulOrders(db.Model):
     total_price = db.Column(db.Integer(), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
     time_created = db.Column(DateTime(timezone=True), server_default=func.now())
-

@@ -11,8 +11,8 @@ def show_order():
 
 
 def show_total_price():
-    total_price = db.session.query(func.sum(Product.price)).filter(Product.id == OrderedProducts.product_id)\
-                    .join(OrderedProducts, OrderedProducts.customer_id==current_user.id, isouter=True).one()
+    total_price = db.session.query(func.sum(Product.price)).filter(Product.id == OrderedProducts.product_id) \
+        .join(OrderedProducts, OrderedProducts.customer_id == current_user.id, isouter=True).one()
     return total_price[0]
 
 
@@ -21,4 +21,3 @@ def cancel_order():
     for product in products_to_delete:
         db.session.delete(product)
         db.session.commit()
-

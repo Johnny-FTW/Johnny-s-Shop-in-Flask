@@ -12,7 +12,7 @@ def home_page():
     return render_template('home.html')
 
 
-@app.route('/shop', methods=['GET','POST'])
+@app.route('/shop', methods=['GET', 'POST'])
 def shop_page():
     products = Product.query.all()
     orders = None
@@ -78,7 +78,7 @@ def register_page():
         login_user(customer_to_create)
         flash('Account created successfully!', category='success')
         return redirect(url_for('shop_page'))
-    if form.errors !={}:
+    if form.errors != {}:
         for err_msg in form.errors.values():
             flash(f'Error:{err_msg}', category='danger')
     return render_template('register.html', form=form)
@@ -108,11 +108,3 @@ def logout_page():
     logout_user()
     flash('You have been logget out!', category='info')
     return redirect(url_for('home_page'))
-
-
-
-
-
-
-
-
