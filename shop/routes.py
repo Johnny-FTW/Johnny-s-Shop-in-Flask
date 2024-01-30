@@ -20,44 +20,56 @@ def shop_page():
     buy_form = BuyNow()
     total_price = 0
     cancel_form = CancelOrder()
+
     if current_user.is_authenticated:
         if request.method == 'POST':
             if "product" in request.form:
-                purchased_product = request.form.get('product')
-                ordered_product = OrderedProducts(product_id=purchased_product, customer_id=current_user.id)
-                db.session.add(ordered_product)
-                db.session.commit()
-                flash(f'Product was added to your order!', category='success')
-                orders = show_order()
-                total_price = show_total_price()
+                handle_product_addition(request.form.get('product'))
+
             elif "buy_now" in request.form:
-                orders = show_order()
-                total_price = show_total_price()
-                if current_user.can_purchase(total_price):
-                    current_user.budget -= total_price
-                    db.session.commit()
-                    flash(f'Thank you for order!', category='success')
-                    successfu_order = SuccessfulOrders(total_price=total_price, customer_id=current_user.id)
-                    db.session.add(successfu_order)
-                    db.session.commit()
-                    cancel_order()
-                    orders = show_order()
-                    total_price = show_total_price()
-                else:
-                    flash(f'Not enough money.', category='info')
+                handle_buy_now()
 
             elif "cancel_order" in request.form:
-                cancel_order()
-                flash(f'Your order was canceled.', category='info')
-        else:
-            total_price = show_total_price()
-            orders = show_order()
+                handle_cancel_order()
+
+        total_price = show_total_price()
+        orders = show_order()
+
     else:
         if add_form.is_submitted():
-            flash('You need sign in first!', category='info')
+            flash('You need to sign in first!', category='info')
 
     return render_template('shop.html', products=products, buy_form=buy_form, add_form=add_form,
                            total_price=total_price, orders=orders, cancel_form=cancel_form)
+
+
+def handle_product_addition(purchased_product):
+    ordered_product = OrderedProducts(product_id=purchased_product, customer_id=current_user.id)
+    db.session.add(ordered_product)
+    db.session.commit()
+    flash(f'Product was added to your order!', category='success')
+
+
+def handle_buy_now():
+    orders = show_order()
+    total_price = show_total_price()
+
+    if current_user.can_purchase(total_price):
+        current_user.budget -= total_price
+        db.session.commit()
+        flash(f'Thank you for your order!', category='success')
+        successful_order = SuccessfulOrders(total_price=total_price, customer_id=current_user.id)
+        db.session.add(successful_order)
+        db.session.commit()
+        cancel_order()
+        flash(f'Order canceled.', category='info')
+    else:
+        flash(f'Not enough money.', category='info')
+
+
+def handle_cancel_order():
+    cancel_order()
+    flash(f'Your order was canceled.', category='info')
 
 
 @app.route('/register', methods=['GET', 'POST'])
